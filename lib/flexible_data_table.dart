@@ -121,7 +121,6 @@ class FlexibleDataTable<T> extends StatefulWidget {
 
 class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   late List<T> _filteredData;
-  late TextEditingController _searchController;
   String? _sortColumn;
   bool _sortAscending = true;
   int _currentPage = 0;
@@ -203,7 +202,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   @override
   void initState() {
     super.initState();
-    _searchController = TextEditingController();
     _filteredData = List.from(widget.data);
     _pageSize = widget.pageSize;
     _currentTableType = widget.tableType;
@@ -1278,8 +1276,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
           const SizedBox(width: 16),
           _buildTableTypeSelector(),
         ],
-        const Spacer(),
-        _buildSearchField(),
+        
       ],
     );
   }
@@ -1488,46 +1485,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildSearchField() {
-    return SizedBox(
-      width: 250,
-      height: 40,
-      child: TextField(
-        controller: _searchController,
-        onChanged: _filterData,
-        style: GoogleFonts.poppins(
-          color: _rowText,
-          fontSize: 14,
-        ),
-        decoration: InputDecoration(
-          hintText: 'Search',
-          hintStyle: GoogleFonts.poppins(
-            color: _subtleTextColor,
-            fontSize: 14,
-          ),
-          prefixIcon: Icon(
-            Icons.search,
-            color: _subtleTextColor,
-          ),
-          filled: true,
-          fillColor: _surfaceColor,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: _border),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: _border),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: widget.primaryColor, width: 2),
-          ),
-        ),
       ),
     );
   }
@@ -2315,7 +2272,6 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
 
   @override
   void dispose() {
-    _searchController.dispose();
     _horizontalScrollController.dispose();
     _verticalScrollController.dispose();
     super.dispose();
