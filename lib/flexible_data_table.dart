@@ -55,6 +55,7 @@ class FlexibleDataTable<T> extends StatefulWidget {
   final Color? checkboxColor;
   final int pageSize;
   final Function(int page, int pageSize)? onPageChanged;
+  final Function(String query)? onSearch;
   final int totalItems;
   final bool isServerSide;
   final Map<String, dynamic>? headers;
@@ -101,6 +102,7 @@ class FlexibleDataTable<T> extends StatefulWidget {
     this.borderColor,
     this.checkboxColor,
     this.onPageChanged,
+    this.onSearch,
     this.totalItems = 0,
     this.isServerSide = false,
     this.headers,
@@ -121,6 +123,7 @@ class FlexibleDataTable<T> extends StatefulWidget {
 
 class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   late List<T> _filteredData;
+  late TextEditingController _searchController;
   String? _sortColumn;
   bool _sortAscending = true;
   int _currentPage = 0;
@@ -202,6 +205,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
     _filteredData = List.from(widget.data);
     _pageSize = widget.pageSize;
     _currentTableType = widget.tableType;
@@ -1276,7 +1280,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
           const SizedBox(width: 16),
           _buildTableTypeSelector(),
         ],
-        
+        const Spacer(),
+        _buildSearchField(),
       ],
     );
   }
@@ -1489,6 +1494,46 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     );
   }
 
+  Widget _buildSearchField() {
+    return SizedBox(
+      width: 250,
+      height: 40,
+      child: TextField(
+        controller: _searchController,
+        onChanged: onSearch,
+        style: GoogleFonts.poppins(
+          color: _rowText,
+          fontSize: 14,
+        ),
+        decoration: InputDecoration(
+          hintText: 'Search',
+          hintStyle: GoogleFonts.poppins(
+            color: _subtleTextColor,
+            fontSize: 14,
+          ),
+          prefixIcon: Icon(
+            Icons.search,
+            color: _subtleTextColor,
+          ),
+          filled: true,
+          fillColor: _surfaceColor,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: _border),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: _border),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: widget.primaryColor, width: 2),
+          ),
+        ),
+      ),
+    );
+  }
+  
   Widget _buildPageSizeDropdown() {
     const int allItemsValue = -1;
     final List<dynamic> pageSizes = [5, 10, 25, 50, 100, allItemsValue];
@@ -2272,6 +2317,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
 
   @override
   void dispose() {
+     _searchController.dispose();
     _horizontalScrollController.dispose();
     _verticalScrollController.dispose();
     super.dispose();
