@@ -1500,7 +1500,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
       height: 40,
       child: TextField(
         controller: _searchController,
-        onChanged: onSearch,
+        onChanged: widget.onSearch,
         style: GoogleFonts.poppins(
           color: _rowText,
           fontSize: 14,
