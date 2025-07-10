@@ -1275,7 +1275,7 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
     return Row(
       children: [
         widget.showPageSizeButton ? 
-        _buildPageSizeDropdown(), : SizedBox.shrink(),
+        _buildPageSizeDropdown() : SizedBox.shrink(),
         const SizedBox(width: 16),
         _buildExportButton(),
         if (widget.showTableTypeSelector) ...[
