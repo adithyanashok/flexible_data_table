@@ -56,6 +56,7 @@ class FlexibleDataTable<T> extends StatefulWidget {
   final int pageSize;
   final Function(int page, int pageSize)? onPageChanged;
   final Function(String query)? onSearch;
+  final bool showPageSizeButton;
   final int totalItems;
   final bool isServerSide;
   final Map<String, dynamic>? headers;
@@ -106,7 +107,7 @@ class FlexibleDataTable<T> extends StatefulWidget {
     this.totalItems = 0,
     this.isServerSide = false,
     this.headers,
-
+    this.showPageSizeButton,
     // New table type parameters
     this.tableType = FlexibleDataTableType.standard,
     this.stripedRowColor,
@@ -1273,7 +1274,8 @@ class FlexibleDataTableState<T> extends State<FlexibleDataTable<T>> {
   Widget _buildTopBar() {
     return Row(
       children: [
-        _buildPageSizeDropdown(),
+        widget.showPageSizeButton ? 
+        _buildPageSizeDropdown(), : SizedBox.shrink(),
         const SizedBox(width: 16),
         _buildExportButton(),
         if (widget.showTableTypeSelector) ...[
