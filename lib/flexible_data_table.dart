@@ -107,7 +107,7 @@ class FlexibleDataTable<T> extends StatefulWidget {
     this.totalItems = 0,
     this.isServerSide = false,
     this.headers,
-    this.showPageSizeButton,
+    required this.showPageSizeButton,
     // New table type parameters
     this.tableType = FlexibleDataTableType.standard,
     this.stripedRowColor,
